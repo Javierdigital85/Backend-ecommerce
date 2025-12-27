@@ -1,0 +1,94 @@
+### USER REGISTER
+
+POST http://localhost:3001/api/auth/register
+Content-Type: application/json
+
+{
+  "username":"Javier",
+  "email":"javiercolodro@gmail.com",
+  "password":"javier123"
+}
+
+### USER LOGIN 
+
+POST http://localhost:3001/api/auth/login
+Content-type: application/json
+
+{
+  "email":"javiercolodro@gmail.com",
+  "password":"javier123"
+}
+
+### USER LOGOUT
+
+POST http://localhost:3001/api/auth/logout
+
+
+### PETICIONES DE PRODUCTOS
+
+GET http://localhost:3001/api/products
+Content-Type: application/json
+
+
+### CREAR PRODUCTO
+POST http://localhost:3001/api/products
+Content-Type: application/json
+
+{
+  "name": "Nintendo Switch",
+  "description" : "Consola de videojuegos híbrida con pantalla OLED de 7 pulgadas, colores vibrantes y 64GB de almacenamiento interno",
+  "price": 500,
+  "stock": 15,
+  "imageUrl": "https://m.media-amazon.com/images/I/61-PblYntsL._AC_SL1500_.jpg"
+}
+
+### ACTUALIZAR PRODUCTO CON PUT
+PUT http://localhost:3001/api/products/692c930483aa79db6533cf72
+Content-Type: application/json
+
+{
+  "stock": 3
+}
+
+### GET Obtener un producto por id
+GET http://localhost:3001/api/products/692c930483aa79db6533cf72
+
+### DELETE PRODUCT
+DELETE http://localhost:3001/api/products/692c930483aa79db6533cf72
+
+### ADD TO CART
+POST http://localhost:3001/api/cart/add
+Content-Type: application/json
+
+{
+  "userId": "694021d92baa3497a981d046",
+  "productId": "694022842baa3497a981d04a",
+  "quantity": 1
+}
+
+### GET CART
+GET http://localhost:3001/api/cart/get/692b4ddc3551dd881cd30685
+
+### UPDATE CART
+PUT http://localhost:3001/api/cart/update/692b4ddc3551dd881cd30685
+Content-Type: application/json
+
+{
+  "productId": "692eebfb95d295b0bf447061",
+  "quantity": 2
+}
+
+### DELETE PRODUCT FROM CART
+DELETE http://localhost:3001/api/cart/removeproduct/692b4ddc3551dd881cd30685
+Content-Type: application/json
+
+{
+  "productId" : "692eebfb95d295b0bf447061"
+}
+
+### CLEAR CART
+DELETE http://localhost:3001/api/cart/clear/692b4ddc3551dd881cd30685
+
+### GET CART TOTAL
+GET http://localhost:3001/api/cart/total/692b4ddc3551dd881cd30685
+
