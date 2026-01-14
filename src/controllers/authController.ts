@@ -3,7 +3,6 @@ import { registerSchema, loginSchema } from "../schemas/authSchema";
 import UserModel from "../models/UserModel";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { TokenPayload } from "../interfaces";
 import { ZodError } from "zod";
 
 export const register: RequestHandler = async (req, res) => {
@@ -134,41 +133,21 @@ export const loginUser: RequestHandler = async (req, res) => {
 };
 
 export const profile: RequestHandler = async (req, res) => {
-  //estraer el accessToken de la cookie
-  const token = req.cookies.accessToken;
   try {
-    //verificar o decodificar el token
-    const decoded = jwt.verify(
-      token,
-      process.env.JWT_SECRET as string
-    ) as TokenPayload;
-
-    console.log("datos decodificados del usuario", decoded);
-
-    //Buscar el usuario en la base de datos
-
-    const user = await UserModel.findById(decoded.userId);
-
-    if (!user) {
-      return res.status(404).json({ message: "Usuario no encontrado" });
+    // El middleware authMiddleware ya verificó el token y agregó req.user
+    if (!req.user) {
+      return res.status(401).json({ message: "No autorizado" });
     }
 
     res.status(200).json({
-      id: user._id,
-      email: user.email,
-      isAdmin: user.isAdmin,
-      username: user.username,
+      id: req.user._id,
+      email: req.user.email,
+      isAdmin: req.user.isAdmin,
+      username: req.user.username,
     });
-    console.log(
-      "USUARIO ENCONTRADO CON EXITO Y ENVIADO AL FRONTEND DATOS DEL USUARIO javi"
-    );
   } catch (error) {
-    res.status(401).json({ message: "No autorizado" });
+    res.status(500).json({ message: "Error al obtener perfil", error });
   }
-
-  return {
-    user: "test user",
-  };
 };
 
 export const logout: RequestHandler = async (req, res) => {

@@ -51,7 +51,7 @@ Content-Type: application/json
 }
 
 ### GET Obtener un producto por id
-GET http://localhost:3001/api/products/692c930483aa79db6533cf72
+GET http://localhost:3001/api/products/694b181b8d2edf764219390b
 
 ### DELETE PRODUCT
 DELETE http://localhost:3001/api/products/692c930483aa79db6533cf72
@@ -61,8 +61,8 @@ POST http://localhost:3001/api/cart/add
 Content-Type: application/json
 
 {
-  "userId": "694021d92baa3497a981d046",
-  "productId": "694022842baa3497a981d04a",
+  "userId": "694be136e77991430a719818",
+  "productId": "694b181b8d2edf764219390b",
   "quantity": 1
 }
 
@@ -91,4 +91,38 @@ DELETE http://localhost:3001/api/cart/clear/692b4ddc3551dd881cd30685
 
 ### GET CART TOTAL
 GET http://localhost:3001/api/cart/total/692b4ddc3551dd881cd30685
+
+
+### Crear orden con productos del carrito
+POST http://localhost:3001/api/orders/create
+Content-Type: application/json
+
+{
+  "userId": "694be136e77991430a719818",
+  "items": [
+    {
+      "id": "694b181b8d2edf764219390b",
+      "name": "Nintendo Switch",
+      "quantity": 2,
+      "unit_price": 10000,
+      "imageUrl": "https://m.media-amazon.com/images/I/61-PblYntsL._AC_SL1500_.jpg"
+    }
+  ],
+  "payer": {
+    "email": "javiercolodro@gmail.com"
+  },
+  "shippingInfo": {
+    "firstName": "Juan prueba",
+    "lastName": "Pérez",
+    "email": "javiercolodro@gmail.com",
+    "phone": "1123456789",
+    "address": {
+      "street": "Av. Corrientes",
+      "number": "1234",
+      "city": "Buenos Aires",
+      "state": "CABA",
+      "zipCode": "C1043AAZ"
+    }
+  }
+}
 

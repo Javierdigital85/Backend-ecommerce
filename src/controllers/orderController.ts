@@ -10,6 +10,14 @@ export const createOrder: RequestHandler = async (req, res) => {
   try {
     const { items, payer, shippingInfo } = req.body;
 
+    // Verificar que el usuario esté autenticado (el middleware ya lo validó)
+    if (!req.user || !req.user._id) {
+      return res.status(401).json({
+        success: false,
+        message: "Usuario no autenticado",
+      });
+    }
+
     if (!items || !items.length) {
       return res.status(400).json({
         success: false,
@@ -24,8 +32,9 @@ export const createOrder: RequestHandler = async (req, res) => {
       });
     }
 
-    // Crear la orden en la base de datos primero
+    // Crear la orden en la base de datos con userId
     const newOrder = new OrderModel({
+      userId: req.user._id, // Vincular la orden al usuario autenticado
       products: items.map((item: MercadoPagoItem) => ({
         productId: item.id,
         quantity: item.quantity,

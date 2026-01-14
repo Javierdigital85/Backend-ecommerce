@@ -6,7 +6,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
     "dev": "ts-node-dev --files src/server.ts",
-    "start": "cross-env NODE_ENV=production node dist/server.js"
+    "start": "cross-env NODE_ENV=production node dist/server.js",
+    "seed": "ts-node-dev --files src/seedProducts/addProducts.ts"
   },
   "keywords": [],
   "author": "",
