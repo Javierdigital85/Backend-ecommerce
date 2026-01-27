@@ -47,12 +47,12 @@ export async function callAgent(
 
     const GraphState = Annotation.Root({
       messages: Annotation<BaseMessage[]>({
-        reducer: (x, y) => x.concat(y),
+        reducer: (x: BaseMessage[], y: BaseMessage[]) => x.concat(y),
       }),
     });
 
     const itemLookupTool = tool(
-      async ({ query, n = 10 }) => {
+      async ({ query, n = 10 }: { query: string; n?: number }) => {
         try {
           console.log("Item lookup tool called with query:", query);
           const totalCount = await collection.countDocuments();
