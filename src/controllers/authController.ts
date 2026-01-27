@@ -164,3 +164,29 @@ export const logout: RequestHandler = async (req, res) => {
     res.status(500).json({ message: "Error al cerrar sesión", error: error });
   }
 };
+
+export const updateUser: RequestHandler = async (req, res) => {
+  const { id } = req.params;
+  const { username, email } = req.body;
+
+  const updateUser = await UserModel.findByIdAndUpdate(
+    id,
+    {
+      username,
+      email,
+    },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  if (!updateUser) {
+    return res.status(404).json({ message: "User not found" });
+  }
+
+  res.status(200).json({
+    user: updateUser,
+    message: "User updated successfully",
+  });
+};

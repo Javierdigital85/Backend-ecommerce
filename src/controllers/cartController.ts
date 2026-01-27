@@ -262,7 +262,8 @@ export const getCartTotal: RequestHandler = async (req, res) => {
     if (cart) {
       const total = cart.products.reduce((acc, item) => {
         const product = item.productId as IProduct;
-        return acc + product.price * item.quantity;
+        const finalPrice = product.discountedPrice || product.price;
+        return acc + finalPrice * item.quantity;
       }, 0);
       res.status(200).json({
         message: "Total obtenido con éxito",

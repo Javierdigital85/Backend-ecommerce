@@ -23,6 +23,16 @@ Content-type: application/json
 
 POST http://localhost:3001/api/auth/logout
 
+### UPDATE USER
+
+PUT http://localhost:3001/api/auth/updateUser/696d51e39b6f6cdb77e8395e
+Content-Type: application/json
+
+{
+  "username":"javier",
+  "email":"javiercolodro@gmail.com"
+}
+
 
 ### PETICIONES DE PRODUCTOS
 

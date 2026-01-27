@@ -18,12 +18,18 @@ const ProductSchema = new mongoose.Schema(
       required: true,
       min: 0,
     },
+    discountPercentage: {
+      type: Number,
+      default: 0,
+      min: 0,
+      max: 100,
+    },
     stock: {
       type: Number,
       required: true,
       min: 0,
     },
-    imageUrl: {
+    imageUrl: { 
       type: String,
       required: true,
     },
@@ -32,5 +38,15 @@ const ProductSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+// Virtual para calcular precio con descuento
+ProductSchema.virtual('discountedPrice').get(function() {
+  if (this.discountPercentage > 0) {
+    return Math.round((this.price * (1 - this.discountPercentage / 100)) * 100) / 100;
+  }
+  return this.price;
+});
+
+ProductSchema.set('toJSON', { virtuals: true });
 
 export default mongoose.model<IProduct>("Product", ProductSchema);

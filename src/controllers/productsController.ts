@@ -103,3 +103,30 @@ export const deleteProduct: RequestHandler = async (req, res) => {
     res.status(500).json({ message: "Error al eliminar el producto" });
   }
 };
+export const applyDiscount: RequestHandler = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { discountPercentage } = req.body;
+
+    if (discountPercentage < 0 || discountPercentage > 100) {
+      return res.status(400).json({ message: "El descuento debe estar entre 0 y 100" });
+    }
+
+    const product = await ProductModel.findByIdAndUpdate(
+      id,
+      { discountPercentage },
+      { new: true }
+    );
+
+    if (!product) {
+      return res.status(404).json({ message: "Producto no encontrado" });
+    }
+
+    res.status(200).json({ 
+      message: "Descuento aplicado exitosamente", 
+      product 
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error al aplicar descuento" });
+  }
+};

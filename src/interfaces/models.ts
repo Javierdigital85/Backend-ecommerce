@@ -13,6 +13,8 @@ export interface IProduct extends Document {
   name: string;
   description: string;
   price: number;
+  discountPercentage?: number;
+  discountedPrice?: number;
   stock: number;
   imageUrl: string;
 }
