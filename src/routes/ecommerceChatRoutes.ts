@@ -4,30 +4,66 @@ import { getMongoClient } from "../config/configdb";
 
 const router = express.Router();
 
+// Validate message from request body
+function validateMessage(body: any): string | null {
+  const message = body?.message;
+  if (!message || typeof message !== "string" || !message.trim()) {
+    return null;
+  }
+  // Limit message length to prevent abuse
+  return message.trim().slice(0, 1000);
+}
+
 router.post("/chat", async (req: Request, res: Response) => {
-  const initialMessage = req.body.message;
+  const message = validateMessage(req.body);
+  if (!message) {
+    res
+      .status(400)
+      .json({ error: "Message is required and must be a non-empty string." });
+    return;
+  }
+
   const threadId = Date.now().toString();
-  console.log(initialMessage);
+
   try {
     const mongoClient = getMongoClient();
-    const response = await callAgent(mongoClient, initialMessage, threadId);
+    const response = await callAgent(mongoClient, message, threadId);
     res.json({ threadId, response });
-  } catch (error) {
-    console.error("Error starting conversation", error);
-    res.status(500).json({ error: "Internal server error" });
+  } catch (error: any) {
+    console.error("Chat error:", error.message);
+    const statusCode = error.message?.includes("rate limit") ? 429 : 500;
+    res.status(statusCode).json({
+      error:
+        statusCode === 429
+          ? "Too many requests. Please wait a moment and try again."
+          : "Our assistant is temporarily unavailable. Please try again shortly.",
+    });
   }
 });
 
 router.post("/chat/:threadId", async (req: Request, res: Response) => {
-  const { threadId } = req.params;
-  const { message } = req.body;
+  const threadId = req.params.threadId as string;
+  const message = validateMessage(req.body);
+  if (!message) {
+    res
+      .status(400)
+      .json({ error: "Message is required and must be a non-empty string." });
+    return;
+  }
+
   try {
     const mongoClient = getMongoClient();
-    const response = await callAgent(mongoClient, message, threadId!);
+    const response = await callAgent(mongoClient, message, threadId);
     res.json({ response });
-  } catch (error) {
-    console.error("Error in chat", error);
-    res.status(500).json({ error: "Internal server error" });
+  } catch (error: any) {
+    console.error("Chat error:", error.message);
+    const statusCode = error.message?.includes("rate limit") ? 429 : 500;
+    res.status(statusCode).json({
+      error:
+        statusCode === 429
+          ? "Too many requests. Please wait a moment and try again."
+          : "Our assistant is temporarily unavailable. Please try again shortly.",
+    });
   }
 });
 
