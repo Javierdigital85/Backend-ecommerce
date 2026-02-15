@@ -23,11 +23,12 @@ router.post("/chat", async (req: Request, res: Response) => {
     return;
   }
 
+  const language = req.body?.language || "es"; // Default to Spanish
   const threadId = Date.now().toString();
 
   try {
     const mongoClient = getMongoClient();
-    const response = await callAgent(mongoClient, message, threadId);
+    const response = await callAgent(mongoClient, message, threadId, language);
     res.json({ threadId, response });
   } catch (error: any) {
     console.error("Chat error:", error.message);
@@ -51,9 +52,11 @@ router.post("/chat/:threadId", async (req: Request, res: Response) => {
     return;
   }
 
+  const language = req.body?.language || "es"; // Default to Spanish
+
   try {
     const mongoClient = getMongoClient();
-    const response = await callAgent(mongoClient, message, threadId);
+    const response = await callAgent(mongoClient, message, threadId, language);
     res.json({ response });
   } catch (error: any) {
     console.error("Chat error:", error.message);

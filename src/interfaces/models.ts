@@ -11,7 +11,9 @@ export interface IUser extends Document {
 // ==================== Product Interfaces ====================
 export interface IProduct extends Document {
   name: string;
+  name_es?: string;
   description: string;
+  description_es?: string;
   price: number;
   discountPercentage?: number;
   discountedPrice?: number;

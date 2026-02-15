@@ -24,12 +24,12 @@ import "dotenv/config";
 
 const DB_NAME = "ecommerceDB";
 
-const SYSTEM_PROMPT = `You are a professional shopping assistant for our online store. Respond in the same language the customer uses.
+const SYSTEM_PROMPTS = {
+  en: `You are a professional shopping assistant for our online store.
 
 ROLE: Help customers find products, answer questions about orders, shipping, and store policies. Be concise, friendly, and helpful — like a real store assistant.
 
 RULES:
-- Always reply in the customer's language. Translate product info from the database if needed.
 - Use the product_search tool whenever customers ask about products, prices, stock, or recommendations.
 - Keep responses short and scannable. Use line breaks between products.
 - When listing products, use this format for each:
@@ -50,7 +50,41 @@ STORE POLICIES:
 - Warranty: 1 year (electronics), 6 months (accessories)
 - Contact: support@tutienda.com
 
-Current time: {time}`;
+Current time: {time}`,
+
+  es: `Eres un asistente profesional de compras para nuestra tienda en línea.
+
+ROL: Ayuda a los clientes a encontrar productos, responde preguntas sobre pedidos, envíos y políticas de la tienda. Sé conciso, amigable y útil, como un verdadero asistente de tienda.
+
+REGLAS:
+- Usa la herramienta product_search cada vez que los clientes pregunten sobre productos, precios, stock o recomendaciones.
+- Mantén las respuestas cortas y fáciles de leer. Usa saltos de línea entre productos.
+- Al listar productos, usa este formato para cada uno:
+
+  **Nombre del Producto**
+  Breve descripción
+  Precio: $monto | Stock: X unidades
+
+- Si no se encuentran resultados, sugiere términos de búsqueda alternativos o categorías.
+- Mantente enfocado en asistencia de compras. Redirige cortésmente preguntas fuera de tema.
+- Nunca inventes productos o precios — solo usa datos de la herramienta de búsqueda.
+
+POLÍTICAS DE LA TIENDA:
+- Envío gratis en pedidos mayores a $100
+- Entrega estándar: 3-5 días hábiles | Express: 1-2 días (costo adicional)
+- Devoluciones aceptadas dentro de 30 días
+- Pago: Tarjetas de crédito, MercadoPago
+- Garantía: 1 año (electrónicos), 6 meses (accesorios)
+- Contacto: support@tutienda.com
+
+Hora actual: {time}`,
+};
+
+function getSystemPrompt(language: string = "es"): string {
+  return (
+    SYSTEM_PROMPTS[language as keyof typeof SYSTEM_PROMPTS] || SYSTEM_PROMPTS.es
+  );
+}
 
 // Reusable graph state definition
 const GraphState = Annotation.Root({
@@ -71,16 +105,13 @@ function getEmbeddingsModel(): GoogleGenerativeAIEmbeddings {
   return embeddingsModel;
 }
 
-// Prompt template (singleton)
-let promptTemplate: ChatPromptTemplate | null = null;
-function getPromptTemplate(): ChatPromptTemplate {
-  if (!promptTemplate) {
-    promptTemplate = ChatPromptTemplate.fromMessages([
-      ["system", SYSTEM_PROMPT],
-      new MessagesPlaceholder("messages"),
-    ]);
-  }
-  return promptTemplate;
+// Prompt template (now accepts language parameter)
+function getPromptTemplate(language: string = "es"): ChatPromptTemplate {
+  const systemPrompt = getSystemPrompt(language);
+  return ChatPromptTemplate.fromMessages([
+    ["system", systemPrompt],
+    new MessagesPlaceholder("messages"),
+  ]);
 }
 
 // ==================== Retry Logic ====================
@@ -180,6 +211,7 @@ export async function callAgent(
   client: MongoClient,
   query: string,
   thread_id: string,
+  language: string = "es",
 ) {
   try {
     const collection = client.db(DB_NAME).collection("products");
@@ -225,7 +257,7 @@ export async function callAgent(
 
     async function callModel(state: typeof GraphState.State) {
       return retryWithBackoff(async () => {
-        const prompt = getPromptTemplate();
+        const prompt = getPromptTemplate(language);
         const formattedPrompt = await prompt.formatMessages({
           time: new Date().toISOString(),
           messages: state.messages,
