@@ -7,4 +7,7 @@ const router = express.Router();
 // Crear nueva orden de compra y generar preferencia de pago de MP (requiere autenticación)
 router.post("/create", authMiddleware, orderController.createOrder);
 
+// Obtener órdenes del usuario autenticado
+router.get("/my-orders", authMiddleware, orderController.getMyOrders);
+
 export default router;

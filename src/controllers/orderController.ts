@@ -4,6 +4,20 @@ import OrderModel from "../models/OrderModel";
 import { RequestHandler } from "express";
 import { MercadoPagoItem } from "../interfaces";
 
+export const getMyOrders: RequestHandler = async (req, res) => {
+  try {
+    if (!req.user || !req.user._id) {
+      return res.status(401).json({ success: false, message: "Usuario no autenticado" });
+    }
+
+    const orders = await OrderModel.find({ userId: req.user._id }).sort({ createdAt: -1 });
+
+    res.status(200).json({ success: true, orders });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Error al obtener las órdenes" });
+  }
+};
+
 const preference = new Preference(client);
 
 export const createOrder: RequestHandler = async (req, res) => {

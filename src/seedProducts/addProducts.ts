@@ -111,6 +111,54 @@ const products = [
     stock: 15,
     imageUrl: "https://http2.mlstatic.com/D_902561-MLA93206068335_092025-C.jpg",
   },
+  {
+    name: "Squier Affinity Strat",
+    name_es: "Squier Affinity Strat",
+    description:
+      "Affordable electric guitar with alder body, vintage-style pickups. Great for beginners and budget-conscious players.",
+    description_es:
+      "Guitarra eléctrica accesible con cuerpo de aliso, pastillas estilo vintage. Ideal para principiantes y jugadores con presupuesto limitado.",
+    price: 299.99,
+    stock: 20,
+    imageUrl:
+      "https://musichall.com.py/tienda/wp-content/uploads/2022/09/1GUISQ0378108565E.jpg",
+  },
+  {
+    name: "Epiphone Les Paul Special",
+    name_es: "Epiphone Les Paul Especial",
+    description:
+      "Budget-friendly electric guitar with mahogany body, humbucker pickups. Great for beginners and those on a tight budget.",
+    description_es:
+      "Guitarra eléctrica económica con cuerpo de caoba, pastillas humbucker. Ideal para principiantes y personas con presupuesto ajustado.",
+    price: 199.99,
+    stock: 25,
+    imageUrl:
+      "https://www.casainstrumental.com/wp-content/uploads/2024/09/ENSVVSVCH1.png",
+  },
+  {
+    name: "Fender Stratocaster American Professional",
+    name_es: "Fender Stratocaster Americana Profesional",
+    description:
+      "Professional electric guitar with alder body, V-Mod II pickups, maple neck, glossy finish. Versatile sound and exceptional resonance.",
+    description_es:
+      "Guitarra eléctrica profesional con cuerpo de aliso, pastillas V-Mod II, cuello de arce, acabado brillante. Sonido versátil y resonancia excepcional.",
+    price: 1299.99,
+    stock: 8,
+    imageUrl:
+      "https://www.musicanarias.com/8727-thickbox_default/fender-american-professional-ii-stratocaster.jpg",
+  },
+  {
+    name: "Gibson SG Special",
+    name_es: "Gibson SG Especial",
+    description:
+      "Electric guitar with mahogany body, dual humbucker pickups. Classic design and versatile sound, perfect for rock and blues.",
+    description_es:
+      "Guitarra eléctrica con cuerpo de caoba, pastillas humbucker dobles. Diseño clásico y sonido versátil, perfecto para rock y blues.",
+    price: 1499.99,
+    stock: 9,
+    imageUrl:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPyOcsdqBOCzPyi_vnhsxNS8W0zSAQcxN7vQ&s",
+  },
 ];
 
 const seedProducts = async () => {
@@ -128,48 +176,30 @@ const seedProducts = async () => {
     await mongoose.connect(dbURI);
     console.log("✅ Conectado a MongoDB");
 
-    // Limpiar productos existentes
-    await ProductModel.deleteMany({});
-    console.log("🗑️  Productos anteriores eliminados");
+    // Upsert: actualiza productos existentes (conserva su _id) e inserta nuevos
+    const bulkOps = products.map((product) => ({
+      updateOne: {
+        filter: { name: product.name },
+        update: { $set: product },
+        upsert: true,
+      },
+    }));
 
-    // Insertar nuevos productos
-    const insertedProducts = await ProductModel.insertMany(products);
+    const bulkResult = await ProductModel.bulkWrite(bulkOps);
     console.log(
-      `✅ ${insertedProducts.length} productos agregados exitosamente`,
+      `✅ Productos procesados: ${bulkResult.upsertedCount} nuevos, ${bulkResult.modifiedCount} actualizados`,
     );
 
-    // Mostrar productos insertados
-    console.log("\n📦 Productos insertados:");
-    insertedProducts.forEach((product, index) => {
+    // Mostrar productos en la base de datos
+    const allProducts = await ProductModel.find({});
+    console.log("\n📦 Productos en la base de datos:");
+    allProducts.forEach((product, index) => {
       console.log(`${index + 1}. ${product.name} - $${product.price}`);
     });
 
-    // LIMPIAR CARRITOS CON PRODUCTOS HUÉRFANOS
-    console.log("\n🧹 Limpiando carritos con productos huérfanos...");
-
-    const result = await CartModel.updateMany(
-      { "products.productId": null },
-      { $pull: { products: { productId: null } } },
-    );
-
-    if (result.modifiedCount > 0) {
-      console.log(
-        `✅ Productos null eliminados de ${result.modifiedCount} carritos`,
-      );
-
-      const emptyCartsResult = await CartModel.deleteMany({
-        products: { $size: 0 },
-      });
-      console.log(
-        `🗑️  ${emptyCartsResult.deletedCount} carritos vacíos eliminados`,
-      );
-    } else {
-      console.log("✨ No se encontraron productos null en los carritos");
-    }
-
     // Mostrar estadísticas finales de carritos
     const finalCarts = await CartModel.countDocuments();
-    console.log(`\n📊 Carritos activos después de limpieza: ${finalCarts}`);
+    console.log(`\n📊 Carritos activos (sin modificar): ${finalCarts}`);
 
     // Desconectar
     await mongoose.disconnect();

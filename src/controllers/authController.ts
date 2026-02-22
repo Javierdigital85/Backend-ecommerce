@@ -104,7 +104,7 @@ export const loginUser: RequestHandler = async (req, res) => {
       JWT_SECRET,
       {
         expiresIn: "1h",
-      }
+      },
     );
     const userData = {
       id: user._id,
@@ -178,7 +178,7 @@ export const updateUser: RequestHandler = async (req, res) => {
     {
       new: true,
       runValidators: true,
-    }
+    },
   );
 
   if (!updateUser) {
@@ -189,4 +189,13 @@ export const updateUser: RequestHandler = async (req, res) => {
     user: updateUser,
     message: "User updated successfully",
   });
+};
+
+export const getUsers: RequestHandler = async (_req, res) => {
+  try {
+    const users = await UserModel.find({}).select("-password");
+    res.status(200).json({ users, message: "Users obtained successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Error al obtener usuarios", error });
+  }
 };

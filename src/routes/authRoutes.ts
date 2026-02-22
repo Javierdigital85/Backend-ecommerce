@@ -10,9 +10,11 @@ router.post("/login", authController.loginUser);
 
 router.post("/logout", authController.logout);
 
-router.put("/updateUser/:id", authController.updateUser)
+router.put("/updateUser/:id", authController.updateUser);
 
 router.get("/profile", authMiddleware, authController.profile);
+
+router.get("/users", authMiddleware, authController.getUsers);
 
 export default router;
 
