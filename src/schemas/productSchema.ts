@@ -7,5 +7,7 @@ export const productSchema = z.object({
   description_es: z.string().min(10).max(254).optional(),
   price: z.number().min(1),
   stock: z.number().min(0).int(),
-  imageUrl: z.url(),
+  images: z.array(z.string().url().min(1)),
+  videoUrl: z.string().nullable().optional(),
+  videoSource: z.enum(["cloudinary", "youtube"]).nullable().optional(),
 });

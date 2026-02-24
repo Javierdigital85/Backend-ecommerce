@@ -44,7 +44,7 @@ export const register: RequestHandler = async (req, res) => {
 
     //agregamos el userId al payload
     const token = jwt.sign({ userId: newUser._id }, JWT_SECRET, {
-      expiresIn: "1h",
+      expiresIn: "7d",
     });
 
     //header.payload.signature
@@ -57,7 +57,7 @@ export const register: RequestHandler = async (req, res) => {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production", // true enviamos el token a travez de https
         sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-        maxAge: 60 * 60 * 1000, //1 hora
+        maxAge: 7 * 24 * 60 * 60 * 1000, //7 días
       })
       .status(201)
       .json({ message: "Usuario registrado con éxito", newUser: user });
@@ -103,7 +103,7 @@ export const loginUser: RequestHandler = async (req, res) => {
       { userId: user._id, username: user.username },
       JWT_SECRET,
       {
-        expiresIn: "1h",
+        expiresIn: "7d",
       },
     );
     const userData = {
@@ -118,7 +118,7 @@ export const loginUser: RequestHandler = async (req, res) => {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-        maxAge: 60 * 60 * 1000,
+        maxAge: 7 * 24 * 60 * 60 * 1000, //7 días
       })
       .status(200)
       .json(userData);

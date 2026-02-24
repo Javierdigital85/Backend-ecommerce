@@ -18,7 +18,9 @@ export interface IProduct extends Document {
   discountPercentage?: number;
   discountedPrice?: number;
   stock: number;
-  imageUrl: string;
+  images: string[];
+  videoUrl?: string | null;
+  videoSource?: "cloudinary" | "youtube" | null;
 }
 
 // ==================== Cart Interfaces ====================
@@ -71,7 +73,7 @@ export interface IOrder extends Document {
     name: string;
     price: number;
     quantity: number;
-    imageUrl: string;
+    images: string[];
   }[];
   totalAmount: number;
   status: "pending" | "approved" | "rejected" | "cancelled" | "in_process";

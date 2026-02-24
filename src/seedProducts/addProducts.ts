@@ -15,8 +15,9 @@ const products = [
       "Guitarra eléctrica profesional con cuerpo de aliso, pastillas V-Mod II, cuello de arce, acabado brillante. Sonido versátil y resonancia excepcional.",
     price: 1299.99,
     stock: 8,
-    imageUrl:
+    images: [
       "https://acdn-us.mitiendanube.com/stores/005/899/763/products/0110232849_fen_ins_frt_1_rr-a949163d096af62c2b17552007895226-1024-1024.webp",
+    ],
   },
   {
     name: "Gibson Les Paul Standard",
@@ -27,8 +28,9 @@ const products = [
       "Guitarra eléctrica de lujo con cuerpo de caoba, tapa de arce flameado, pastillas Burstbucker. Tono cálido y poderoso, ideal para rock.",
     price: 2599.99,
     stock: 5,
-    imageUrl:
+    images: [
       "https://thumbs.static-thomann.de/thumb/padthumb600x600/pics/bdb/_46/462510/14952105_800.jpg",
+    ],
   },
   {
     name: "Ibanez RG Series",
@@ -39,7 +41,7 @@ const products = [
       "Guitarra eléctrica moderna con cuerpo ultadelgado, mástil rápido, pastillas PowerSpan Dual. Perfecta para metal y rock moderno.",
     price: 799.99,
     stock: 12,
-    imageUrl: "https://m.media-amazon.com/images/I/71UK1KlzA-L._AC_SL1500_.jpg",
+    images: ["https://m.media-amazon.com/images/I/71UK1KlzA-L._AC_SL1500_.jpg"],
   },
   {
     name: "Yamaha FG830 Acoustic",
@@ -50,8 +52,9 @@ const products = [
       "Guitarra acústica de calidad profesional con cuerpo de abeto, fondo y aros de caoba. Sonido cálido, resonancia profunda, excelente para principiantes y profesionales.",
     price: 449.99,
     stock: 18,
-    imageUrl:
+    images: [
       "https://i0.wp.com/www.inovamusicnet.com/wp-content/uploads/2021/04/41aL9JWFqfL._AC_US800_.jpg?fit=600%2C600&ssl=1",
+    ],
   },
   {
     name: "Taylor 214ce Acoustic",
@@ -62,8 +65,9 @@ const products = [
       "Guitarra acústica-eléctrica con cuerpo de gran auditorium, pastilla Expression System 2. Sonido brillante y proyección excepcional, ideal para actuaciones.",
     price: 899.99,
     stock: 10,
-    imageUrl:
+    images: [
       "https://http2.mlstatic.com/D_Q_NP_2X_641563-MLA96868484237_102025-T.webp",
+    ],
   },
   {
     name: "Martin D-28 Acoustic",
@@ -74,8 +78,9 @@ const products = [
       "Guitarra acústica de gama alta con cuerpo de palisandro y abeto. Sonido resonante y profundo, preferida por músicos profesionales de folk y country.",
     price: 2499.99,
     stock: 6,
-    imageUrl:
+    images: [
       "https://thumbs.static-thomann.de/thumb/padthumb600x600/pics/bdb/_60/605876/20108510_800.jpg",
+    ],
   },
   {
     name: "José Ramírez Nylon Classical",
@@ -86,7 +91,7 @@ const products = [
       "Guitarra clásica española con cuerpo de abeto y palosanto. Sonido cálido, profundo y sedoso. Instrumento de concierto con excelente proyección.",
     price: 3299.99,
     stock: 4,
-    imageUrl: "https://m.media-amazon.com/images/I/51sfaDcP2QL.jpg",
+    images: ["https://m.media-amazon.com/images/I/51sfaDcP2QL.jpg"],
   },
   {
     name: "Alhambra 11P Classical",
@@ -97,8 +102,9 @@ const products = [
       "Guitarra clásica profesional con armazón de palisandro, cuerpo de abeto rojo. Sonido cálido y equilibrado, ideal para técnica clásica.",
     price: 1899.99,
     stock: 7,
-    imageUrl:
+    images: [
       "https://m.media-amazon.com/images/I/61G-67vucIL._AC_UF894,1000_QL80_.jpg",
+    ],
   },
   {
     name: "Yamaha CG192 Classical",
@@ -109,7 +115,7 @@ const products = [
       "Guitarra clásica educativa y profesional con cuerpo de caoba, cuello resistente. Excelente relación calidad-precio para estudiantes y músicos.",
     price: 649.99,
     stock: 15,
-    imageUrl: "https://http2.mlstatic.com/D_902561-MLA93206068335_092025-C.jpg",
+    images: ["https://http2.mlstatic.com/D_902561-MLA93206068335_092025-C.jpg"],
   },
   {
     name: "Squier Affinity Strat",
@@ -120,8 +126,9 @@ const products = [
       "Guitarra eléctrica accesible con cuerpo de aliso, pastillas estilo vintage. Ideal para principiantes y jugadores con presupuesto limitado.",
     price: 299.99,
     stock: 20,
-    imageUrl:
+    images: [
       "https://musichall.com.py/tienda/wp-content/uploads/2022/09/1GUISQ0378108565E.jpg",
+    ],
   },
   {
     name: "Epiphone Les Paul Special",
@@ -132,8 +139,9 @@ const products = [
       "Guitarra eléctrica económica con cuerpo de caoba, pastillas humbucker. Ideal para principiantes y personas con presupuesto ajustado.",
     price: 199.99,
     stock: 25,
-    imageUrl:
+    images: [
       "https://www.casainstrumental.com/wp-content/uploads/2024/09/ENSVVSVCH1.png",
+    ],
   },
   {
     name: "Fender Stratocaster American Professional",
@@ -144,8 +152,9 @@ const products = [
       "Guitarra eléctrica profesional con cuerpo de aliso, pastillas V-Mod II, cuello de arce, acabado brillante. Sonido versátil y resonancia excepcional.",
     price: 1299.99,
     stock: 8,
-    imageUrl:
+    images: [
       "https://www.musicanarias.com/8727-thickbox_default/fender-american-professional-ii-stratocaster.jpg",
+    ],
   },
   {
     name: "Gibson SG Special",
@@ -156,8 +165,9 @@ const products = [
       "Guitarra eléctrica con cuerpo de caoba, pastillas humbucker dobles. Diseño clásico y sonido versátil, perfecto para rock y blues.",
     price: 1499.99,
     stock: 9,
-    imageUrl:
+    images: [
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPyOcsdqBOCzPyi_vnhsxNS8W0zSAQcxN7vQ&s",
+    ],
   },
 ];
 

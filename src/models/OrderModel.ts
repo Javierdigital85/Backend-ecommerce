@@ -28,8 +28,8 @@ const OrderSchema = new mongoose.Schema(
           type: Number,
           required: true,
         },
-        imageUrl: {
-          type: String,
+        images: {
+          type: [String],
           required: false,
         },
       },

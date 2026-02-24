@@ -37,9 +37,18 @@ const ProductSchema = new mongoose.Schema(
       required: true,
       min: 0,
     },
-    imageUrl: {
-      type: String,
+    images: {
+      type: [String],
       required: true,
+    },
+    videoUrl: {
+      type: String,
+      default: null,
+    },
+    videoSource: {
+      type: String,
+      enum: ["cloudinary", "youtube", null],
+      default: null,
     },
   },
   {

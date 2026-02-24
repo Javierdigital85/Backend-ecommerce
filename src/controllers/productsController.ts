@@ -5,7 +5,7 @@ import { ZodError } from "zod";
 
 export const createProduct: RequestHandler = async (req, res) => {
   try {
-    const { name, description, price, stock, imageUrl } = productSchema.parse(
+    const { name, description, price, stock, images, videoUrl, videoSource } = productSchema.parse(
       req.body
     );
 
@@ -14,7 +14,9 @@ export const createProduct: RequestHandler = async (req, res) => {
       description,
       price,
       stock,
-      imageUrl,
+      images,
+      ...(videoUrl !== undefined && { videoUrl }),
+      ...(videoSource !== undefined && { videoSource }),
     });
 
     res
