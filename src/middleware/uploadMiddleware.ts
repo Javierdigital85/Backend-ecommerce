@@ -19,5 +19,14 @@ const videoStorage = new CloudinaryStorage({
   } as any,
 });
 
+const carouselStorage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "carousel",
+    allowed_formats: ["jpg", "jpeg", "png", "webp"],
+  } as any,
+});
+
 export const uploadImage = multer({ storage: imageStorage });
 export const uploadVideo = multer({ storage: videoStorage });
+export const uploadCarouselImage = multer({ storage: carouselStorage });

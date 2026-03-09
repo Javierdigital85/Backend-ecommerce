@@ -82,3 +82,11 @@ export interface IOrder extends Document {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface ICarousel extends Document {
+  title: string;
+  subtitle: string;
+  image: string;
+  order: number;
+  active: boolean;
+}

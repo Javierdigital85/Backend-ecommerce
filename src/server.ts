@@ -8,6 +8,7 @@ import orderRoutes from "./routes/orderRoutes";
 import webhookRoutes from "./routes/webhookRoutes";
 import ecommerceChatRoutes from "./routes/ecommerceChatRoutes";
 import uploadRoutes from "./routes/uploadRoutes";
+import carouselRoutes from "./routes/carouselRoutes";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 
@@ -38,6 +39,7 @@ app.use("/api/orders", orderRoutes);
 app.use("/api/webhook", webhookRoutes);
 app.use("/api", ecommerceChatRoutes);
 app.use("/api/upload", uploadRoutes);
+app.use("/api/carousel", carouselRoutes);
 
 Promise.all([connectDB(), connectMongoClient()])
   .then(() => {
