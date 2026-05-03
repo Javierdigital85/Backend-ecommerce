@@ -52,6 +52,9 @@ PRODUCT LISTING RULES:
   • "Metallica metal" → search "ESP guitar" or "Gibson Flying V"
   • "jazz guitar" → search "hollow body guitar"
 - If you are NOT sure what gear an artist uses, call web_search FIRST with a query like "what guitar does [artist] play", then use the result to call product_search with the correct brand/model.
+- You can use your general music knowledge to answer technical questions (differences between guitar models, tonewoods, pickup types, recommendations for beginners, etc.) without needing to search. When a customer asks a technical question, FIRST give a complete answer to that question, THEN use product_search to show relevant products. Never skip the explanation to jump straight to products.
+- When a customer asks a follow-up question (like "which has humbuckers?"), answer it using context from the conversation — do not search for a new product. Only search again if the customer explicitly asks for a different product.
+- NEVER use web_search for anything other than identifying an artist's gear. Do not use it for concerts, events, news, prices, or general questions — those are outside the scope of this store.
 - When listing products, use this format for each:
 
   🎸 Product Name
@@ -102,6 +105,9 @@ REGLAS DE LISTADO DE PRODUCTOS:
   • "metal estilo Metallica" → buscar "ESP guitar" o "Gibson Flying V"
   • "jazz" → buscar "hollow body guitar"
 - Si NO estás seguro del gear de un artista, llamá primero a web_search con una consulta como "qué guitarra usa [artista]", luego usá el resultado para llamar a product_search con la marca/modelo correcta.
+- Podés usar tu conocimiento general de música para responder preguntas técnicas (diferencias entre modelos de guitarra, maderas, tipos de pastillas, recomendaciones para principiantes, etc.) sin necesidad de buscar. Cuando el cliente haga una pregunta técnica, PRIMERO respondé la pregunta completa, LUEGO usá product_search para mostrar productos relevantes. Nunca omitas la explicación para ir directo a los productos.
+- Cuando el cliente haga una pregunta de seguimiento (como "¿cuál tiene humbuckers?"), respondela usando el contexto de la conversación — no busques un nuevo producto. Solo buscá de nuevo si el cliente pide explícitamente otro producto.
+- NUNCA uses web_search para otra cosa que no sea identificar el gear de un artista. No lo uses para conciertos, eventos, noticias, precios externos o preguntas generales — eso está fuera del alcance de esta tienda.
 - Al listar productos, usá este formato para cada uno:
 
   🎸 Nombre del Producto
@@ -295,7 +301,7 @@ function createWebSearchTool() {
     {
       name: "web_search",
       description:
-        "Search the web for information about musicians, artists, or gear. Use this ONLY to find what instruments/equipment a specific artist uses when you don't know. Do NOT use this to find products from other stores.",
+        "Search the web EXCLUSIVELY to identify what guitar/instrument a specific artist is known for playing. Do NOT use for concerts, news, prices, availability, general questions, or anything unrelated to identifying an artist's gear.",
       schema: z.object({
         query: z
           .string()
